@@ -94,7 +94,16 @@ _suggest_package_publish_flags()
 _suggest_package_install()
 {
     cur=$1
-    packages=$(curl http://package.elm-lang.org/new-packages -sS | sed -E 's/"//' | sed -E 's/"//' | sed -E 's/\[//' | sed -E 's/]//' | awk '{$1=$1};1' | sed -E 's/,//' | tr '\n' ' ')
+    modified=$(date --rfc-2822 -r ~/.elm/new-packages.json 2>/dev/null)
+    http_code=$(curl -w "%{http_code}" --header "If-Modified-Since: $modified" http://package.elm-lang.org/new-packages -sS -o ~/.elm/new-packages.json.tmp)
+
+    if [ "$http_code" == "200" ]; then 
+        mv ~/.elm/new-packages.json.tmp ~/.elm/new-packages.json
+    else 
+        rm ~/.elm/new-packages.json.tmp 
+    fi
+
+    packages=$(cat ~/.elm/new-packages.json | sed -E 's/"//' | sed -E 's/"//' | sed -E 's/\[//' | sed -E 's/]//' | awk '{$1=$1};1' | sed -E 's/,//' | tr '\n' ' ')
     COMPREPLY=( $(compgen -W "${packages}" $cur) )
 }
 
