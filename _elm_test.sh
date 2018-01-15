@@ -68,10 +68,18 @@ _suggest_elm_test_report_options()
 _suggest_elm_test_add_dependencies_options()
 {
     local cur options
-    options=$(ls elm-package.json 2>/dev/null)
-    options+=" "
-    options+=$(ls -d */ 2>/dev/null)
     cur=$1
+
+    if [[ "$cur" == "" ]]; then 
+        options=$(ls elm-package.json 2>/dev/null)
+        options+=" "
+        options+=$(ls -d */ 2>/dev/null)
+    else
+        options=$(ls elm-package.json 2>/dev/null)
+        options+=" "
+        options+=$(ls -d $cur*/ 2>/dev/null)
+    fi
+
     COMPREPLY=( $(compgen -W "${options}" -- $cur) )
 }
 
