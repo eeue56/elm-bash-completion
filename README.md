@@ -27,5 +27,5 @@ If you're using Linux, you probably want `.bashrc`. If you're using OS X, you pr
 Example .bashrc or .bash_profile file:
 
 ```bash
-source ~/dev/elm-bash-completion/_elm_completions.sh
+source ~/dev/elm-bash-completion/_*.sh
 ```
