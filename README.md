@@ -8,21 +8,9 @@ You might start typing and want things to expand
 
 ```
 elm-pa[TAB]
--> 
-elm-package
-
-
 elm-package in[TAB]
-->
-elm-package install 
-
 elm-package install elm-co[TAB]
-->
-elm-package install elm-community/
-
 elm-package install elm-community/html-e[TAB]
-->
-elm-package install elm-community/html-extra
 ```
 
 ![](./elm_bash_completion.gif)
@@ -36,5 +24,5 @@ elm-package install elm-community/html-extra
 Example:
 
 ```bash
-/ ~/dev/elm-bash-completion/_elm_package.sh
+source ~/dev/elm-bash-completion/_elm_package.sh
 ```
