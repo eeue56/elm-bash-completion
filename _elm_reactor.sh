@@ -1,14 +1,14 @@
 #!/bin/bash
 packages=()
 
-_suggest_elm_make_flags()
+_suggest_elm_reactor_flags()
 {
-    flag_options="--yes --help --output --report --debug --warn --docs"
+    flag_options="--port --help --address --version --numeric-version --docs"
     cur=$1
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
 }
 
-_elm_make() 
+_elm_reactor() 
 {
     local cur prev contains is_install
     COMPREPLY=()
@@ -18,10 +18,10 @@ _elm_make()
     contains=$?
 
     if [[ $cur == -* ]]; then
-        _suggest_elm_make_flags $cur
+        _suggest_elm_reactor_flags $cur
         return 0
     fi
 
     return 1
 }
-complete -o default -F _elm_make "elm-make"
+complete -F _elm_reactor "elm-reactor"
