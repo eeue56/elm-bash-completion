@@ -1,5 +1,4 @@
 #!/bin/bash
-packages=()
 
 _suggest_elm_repl_flags()
 {
