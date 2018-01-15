@@ -58,12 +58,14 @@ _is_publish()
 
 _suggest_root_options()
 {
+    local cur
     cur=$1
     COMPREPLY=( $(compgen -W "${root_options}" $cur) )
 }
 
 _suggest_package_install_flags()
 {
+    local cur flag_options
     flag_options="--yes --help"
     cur=$1
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
@@ -71,6 +73,7 @@ _suggest_package_install_flags()
 
 _suggest_package_bump_flags()
 {
+    local cur flag_options
     flag_options="--help"
     cur=$1
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
@@ -78,6 +81,7 @@ _suggest_package_bump_flags()
 
 _suggest_package_diff_flags()
 {
+    local cur flag_options
     flag_options="--help"
     cur=$1
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
@@ -85,6 +89,7 @@ _suggest_package_diff_flags()
 
 _suggest_package_publish_flags()
 {
+    local cur flag_options
     flag_options="--help"
     cur=$1
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
@@ -93,6 +98,7 @@ _suggest_package_publish_flags()
 
 _suggest_package_install()
 {
+    local cur modified http_code
     cur=$1
     modified=$(date --rfc-2822 -r ~/.elm/new-packages.json 2>/dev/null)
     http_code=$(curl -w "%{http_code}" --header "If-Modified-Since: $modified" http://package.elm-lang.org/new-packages -sS -o ~/.elm/new-packages.json.tmp)
@@ -109,11 +115,11 @@ _suggest_package_install()
 
 _elm_package() 
 {
-    local cur prev contains is_install
+    local cur prev contains is_install is_bump is_diff is_publish
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    _contains_root_arg cur
+    _contains_root_arg $cur
     contains=$?
 
     if [ $prev == "elm-package" ] && [ $contains -eq 0 ] ; then
@@ -159,5 +165,7 @@ _elm_package()
             return 0
         fi 
     fi
+
+    return 1
 }
 complete -F _elm_package "elm-package"

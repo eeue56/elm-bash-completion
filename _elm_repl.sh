@@ -9,12 +9,10 @@ _suggest_elm_repl_flags()
 
 _elm_repl() 
 {
-    local cur prev contains is_install
+    local cur prev
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    _contains_root_arg cur
-    contains=$?
 
     if [[ $cur == -* ]]; then
         _suggest_elm_repl_flags $cur
