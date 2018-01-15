@@ -19,10 +19,12 @@ elm-package install elm-community/html-e[TAB]
 
 
 - Clone this repo
-- Source the `_elm_package.sh` file in your .bashrc, using `source` 
+- Source the `_elm_package.sh` file in your `~/.bashrc` or `~/.bash_profile`, using `source` 
 - Restart bash or open a new terminal session
 
-Example .bashrc file:
+If you're using Linux, you probably want `.bashrc`. If you're using OS X, you probably want `.bash_profile`.
+
+Example .bashrc or .bash_profile file:
 
 ```bash
 source ~/dev/elm-bash-completion/_elm_package.sh
