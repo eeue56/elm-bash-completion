@@ -98,16 +98,27 @@ _suggest_package_publish_flags()
 
 _suggest_package_install()
 {
-    local cur modified http_code
+    local cur modified http_code file_age week_in_seconds current_time file_time
     cur=$1
-    modified=$(date --rfc-2822 -r ~/.elm/new-packages.json 2>/dev/null)
-    http_code=$(curl -w "%{http_code}" --header "If-Modified-Since: $modified" http://package.elm-lang.org/new-packages -sS -o ~/.elm/new-packages.json.tmp)
+    week_in_seconds=60*60*24*7
+    current_time=$(date +%s)
+    file_time=$(stat -L --format %Y ~/.elm/new-packages.json 2>/dev/null)
 
-    if [ "$http_code" == "200" ]; then 
-        mv ~/.elm/new-packages.json.tmp ~/.elm/new-packages.json
-    else 
-        rm ~/.elm/new-packages.json.tmp 
+    if [ ! -e "$file_time" ]; then 
+        file_age=$((current_time-file_time))
+
+        if (( $file_age > $week_in_seconds )); then 
+            modified=$(date --rfc-2822 -r ~/.elm/new-packages.json 2>/dev/null)
+            http_code=$(curl -w "%{http_code}" --header "If-Modified-Since: $modified" http://package.elm-lang.org/new-packages -sS -o ~/.elm/new-packages.json.tmp)
+
+            if [ "$http_code" == "200" ]; then 
+                mv ~/.elm/new-packages.json.tmp ~/.elm/new-packages.json
+            else 
+                rm ~/.elm/new-packages.json.tmp 
+            fi
+        fi
     fi
+
 
     packages=$(cat ~/.elm/new-packages.json | sed -E 's/"//' | sed -E 's/"//' | sed -E 's/\[//' | sed -E 's/]//' | awk '{$1=$1};1' | sed -E 's/,//' | tr '\n' ' ')
     COMPREPLY=( $(compgen -W "${packages}" $cur) )
