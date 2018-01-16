@@ -102,7 +102,7 @@ _suggest_package_install()
     cur=$1
     week_in_seconds=60*60*24*7
     current_time=$(date +%s)
-    file_time=$(stat -L --format %Y ~/.elm/new-packages.json 2>/dev/null)
+    file_time=$(date -r ~/.elm/new-packages.json "+%s" 2>/dev/null)
 
     if [ ! -e "$file_time" ]; then 
         file_age=$((current_time-file_time))
