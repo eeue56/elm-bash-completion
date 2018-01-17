@@ -47,6 +47,9 @@ _suggest_elm_files()
     done
 
     COMPREPLY=( $(compgen -W "${actual_options}" -- $cur) )
+    if [[ $COMPREPLY == */ ]]; then
+        compopt -o nospace
+    fi
 }
 
 _suggest_elm_test_flags()
