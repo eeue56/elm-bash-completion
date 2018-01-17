@@ -15,6 +15,11 @@ _contains_root_arg()
     return 0
 }
 
+_apply_no_space()
+{
+    type compopt &>/dev/null && compopt -o nospace
+}
+
 _suggest_elm_files()
 {
     local options cur actual_options word input_word seen
@@ -48,7 +53,7 @@ _suggest_elm_files()
 
     COMPREPLY=( $(compgen -W "${actual_options}" -- $cur) )
     if [[ $COMPREPLY == */ ]]; then
-        compopt -o nospace
+        _apply_no_space
     fi
 }
 
