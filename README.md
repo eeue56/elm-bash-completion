@@ -29,3 +29,13 @@ Example .bashrc or .bash_profile file:
 ```bash
 for f in ~/dev/elm-bash-completion/_*; do source $f; done
 ```
+
+## Oh My Zsh
+
+Use `bashcompinit`.
+
+```
+autoload bashcompinit
+bashcompinit
+for f in ~/dev/elm-bash-completion/_*; do source $f; done
+```
