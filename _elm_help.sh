@@ -5,7 +5,7 @@ packages=()
 _suggest_elm_help_flags()
 {
     local flag_options cur
-    flag_options="--help --version --name --package --module"
+    flag_options="--help --version --name --package --module --style --no-style"
     cur=$1
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
 }
