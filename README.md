@@ -13,7 +13,6 @@ elm-package install elm-co[TAB]
 elm-package install elm-community/html-e[TAB]
 ```
 
-![](./elm_bash_completion.gif)
 ![](./faster_bash_completions.gif)
 
 ## Installation
