@@ -96,7 +96,7 @@ _suggest_package_publish_flags()
 }
 
 
-_suggest_package_install()
+_suggest_package_name()
 {
     local cur modified http_code file_age week_in_seconds current_time file_time
     cur=$1
@@ -157,7 +157,7 @@ _elm_package()
             _suggest_package_install_flags $cur
             return 0
         else
-            _suggest_package_install $cur
+            _suggest_package_name $cur
             return 0
         fi 
     elif [ "$is_bump" == "1" ]; then
@@ -168,6 +168,9 @@ _elm_package()
     elif [ "$is_diff" == "1" ]; then 
         if [[ $cur == -* ]]; then
             _suggest_package_diff_flags $cur
+            return 0
+        else
+            _suggest_package_name $cur
             return 0
         fi 
     elif [ "$is_publish" == "1" ]; then 
