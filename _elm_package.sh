@@ -95,8 +95,31 @@ _suggest_package_publish_flags()
     COMPREPLY=( $(compgen -W "${flag_options}" -- $cur) )
 }
 
+_is_suggesting_package_name()
+{
+    local flags_before_package_name collect_flags
 
-_suggest_package_install()
+    flags_before_package_name=0
+    collect_flags=1
+
+    if (($COMP_CWORD >= 2)); then
+        for (( i = 2; i <= $COMP_CWORD; i++ )); do
+            if [[ ${COMP_WORDS[$i]} == -* ]] && [ "$collect_flags" == "1" ]; then
+                ((flags_before_package_name+=1))
+            else
+                collect_flags=0
+            fi
+        done
+
+        if [ "$(($COMP_CWORD - $flags_before_package_name))" == "2" ]; then
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+_suggest_package_name()
 {
     local cur modified http_code file_age week_in_seconds current_time file_time
     cur=$1
@@ -150,14 +173,17 @@ _elm_package()
     _is_publish
     is_publish=$?
 
+    _is_suggesting_package_name
+    is_suggesting_package_name=$?
+
     if [ "$is_install" == "1" ]; then 
         if [ -e $cur ]; then 
             return 1
         elif [[ $cur == -* ]]; then
             _suggest_package_install_flags $cur
             return 0
-        else
-            _suggest_package_install $cur
+        elif [ "$is_suggesting_package_name" == "1" ]; then
+            _suggest_package_name $cur
             return 0
         fi 
     elif [ "$is_bump" == "1" ]; then
@@ -168,6 +194,9 @@ _elm_package()
     elif [ "$is_diff" == "1" ]; then 
         if [[ $cur == -* ]]; then
             _suggest_package_diff_flags $cur
+            return 0
+        elif [ "$is_suggesting_package_name" == "1" ]; then
+            _suggest_package_name $cur
             return 0
         fi 
     elif [ "$is_publish" == "1" ]; then 
